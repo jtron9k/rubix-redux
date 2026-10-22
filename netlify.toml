@@ -1,0 +1,49 @@
+[build]
+  command = "npm run build"
+  publish = "dist"
+  functions = "netlify/functions"
+  edge_functions = "netlify/edge-functions"
+
+[build.environment]
+  NODE_VERSION = "22"
+
+[functions]
+  node_bundler = "esbuild"
+
+# Per-page share cards: rewrites <title>, description, og:* and twitter:* tags.
+[[edge_functions]]
+  path = "/*"
+  function = "og-meta"
+  excludedPath = ["/api/*", "/admin/*", "/.netlify/*", "/assets/*", "/images/*", "/*.svg", "/*.png", "/*.jpg", "/*.ico", "/*.webp", "/*.txt", "/*.xml", "/*.json"]
+
+# API routes must come before the SPA fallback, or the fallback swallows them.
+[[redirects]]
+  from = "/api/auth"
+  to = "/.netlify/functions/auth"
+  status = 200
+
+[[redirects]]
+  from = "/api/callback"
+  to = "/.netlify/functions/callback"
+  status = 200
+
+[[redirects]]
+  from = "/api/lead"
+  to = "/.netlify/functions/lead"
+  status = 200
+
+[[redirects]]
+  from = "/api/*"
+  to = "/.netlify/functions/:splat"
+  status = 200
+
+# SPA fallback: always last.
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
+
+[[headers]]
+  for = "/admin/*"
+  [headers.values]
+    X-Robots-Tag = "noindex"

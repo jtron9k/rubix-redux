@@ -1,0 +1,12 @@
+node_modules
+dist
+.env
+.env.*
+!.env.example
+.netlify
+netlify/edge-functions/og-manifest.json
+.DS_Store
+*.log
+coverage
+.local/
+.claude/settings.local.json
