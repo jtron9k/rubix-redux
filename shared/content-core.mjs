@@ -156,3 +156,13 @@ export function isValidGtmId(id) {
 export function isValidGroupKey(key) {
   return GROUP_KEY_PATTERN.test(key) && !RESERVED_GROUP_KEYS.includes(key);
 }
+
+export const LAYOUT_KEYS = ['standard', 'services-first', 'trust-heavy', 'lead-form', 'campaign'];
+
+/** The single rule for whether a page can render a layout. Used by LandingPage, the A/B split and check-content. */
+export function canRenderLayout(page, key) {
+  if (!LAYOUT_KEYS.includes(key)) return false;
+  if (key === 'lead-form') return Boolean(page?.form?.fields?.length);
+  if (key === 'campaign') return Boolean(page?.coupons?.length);
+  return true;
+}

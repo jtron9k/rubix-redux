@@ -28,3 +28,5 @@ export function phoneDigits(phone: string | null | undefined): string;
 export function telHref(phone: string | null | undefined): string;
 export function isValidGtmId(id: string | null | undefined): boolean;
 export function isValidGroupKey(key: string): boolean;
+export const LAYOUT_KEYS: import('../src/content/types').LayoutKey[];
+export function canRenderLayout(page: Partial<import('../src/content/types').PageContent> | null | undefined, key: string): boolean;
