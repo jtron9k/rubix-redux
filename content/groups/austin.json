@@ -1,0 +1,12 @@
+{
+  "key": "austin",
+  "name": "Austin",
+  "regionName": "Central Texas",
+  "stateAbbr": "TX",
+  "phone": "(555) 010-0123",
+  "hoursText": "Austin booking line open 7am to 10pm, 7 days a week",
+  "serviceAreaText": "Serving Austin, Round Rock, Cedar Park and Pflugerville",
+  "metaDefaults": {
+    "title": "Austin Babysitters | Brightside Sitters"
+  }
+}

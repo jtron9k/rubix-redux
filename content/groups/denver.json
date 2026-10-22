@@ -1,0 +1,11 @@
+{
+  "key": "denver",
+  "name": "Denver",
+  "regionName": "the Front Range",
+  "stateAbbr": "CO",
+  "phone": "(555) 010-0145",
+  "serviceAreaText": "Serving Denver, Aurora, Lakewood and Boulder",
+  "reviewCounter": {
+    "target": 860
+  }
+}

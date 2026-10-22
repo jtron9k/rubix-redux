@@ -1,0 +1,42 @@
+{
+  "setupComplete": false,
+  "businessName": "Brightside Sitters",
+  "tagline": "Trusted, background-checked babysitters on your schedule.",
+  "phone": "(555) 010-0100",
+  "email": "hello@example.com",
+  "address": "100 Example Street, Suite 1",
+  "hoursText": "Booking line open 7am to 9pm, 7 days a week",
+  "serviceAreaText": "Serving families across our partner cities",
+  "licenseText": "Sample content. Brightside Sitters is a fictional business.",
+  "logo": {
+    "src": "/images/uploads/placeholder-logo.svg",
+    "alt": "Brightside Sitters"
+  },
+  "brand": {
+    "primary": "#0d9488",
+    "accent": "#f59e0b"
+  },
+  "gtmId": "",
+  "siteUrl": "https://your-site.netlify.app",
+  "defaultOgImage": "/images/uploads/placeholder-og.svg",
+  "metaDefaults": {
+    "title": "Brightside Sitters | Trusted Babysitters On Demand",
+    "description": "Background-checked, CPR-certified babysitters for date nights, after school, overnights and last-minute plans."
+  },
+  "noindex": true,
+  "reviewCounter": {
+    "target": 1240,
+    "rampMs": 4000
+  },
+  "consentText": "By submitting, you agree that Brightside Sitters may call or text you about your request, including by automated means. Consent is not a condition of purchase. Message and data rates may apply.",
+  "badges": [
+    {
+      "src": "/images/uploads/placeholder-badge-1.svg",
+      "alt": "Sample award badge"
+    },
+    {
+      "src": "/images/uploads/placeholder-badge-2.svg",
+      "alt": "Sample certification badge"
+    }
+  ]
+}
