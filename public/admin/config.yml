@@ -1,0 +1,337 @@
+# Decap CMS configuration. Every field in src/content/types.ts needs a field here: Decap drops keys
+# it doesn't know about when an editor saves. Optional objects and lists need `required: false` on
+# the wrapper AND on every inner field, or Decap refuses to save an entry that leaves them empty.
+#
+# `repo` and `base_url` are written by `npm run setup`. On Netlify, scripts/patch-admin-config.mjs
+# rewrites them in the built copy from REPOSITORY_URL and URL, so forks work without editing this.
+
+backend:
+  name: github
+  repo: jtron9k/rubix-redux
+  branch: main
+  base_url: https://your-site.netlify.app
+  auth_endpoint: api/auth
+
+# `npx decap-server` + http://localhost:5173/admin/index.html edits local files without GitHub.
+local_backend: true
+
+publish_mode: simple
+media_folder: public/images/uploads
+public_folder: /images/uploads
+
+# Shared field blocks are YAML anchors (&name) defined at their first use and reused with *name.
+
+collections:
+  # ---------- Settings ----------
+  - name: settings
+    label: Settings
+    editor: { preview: false }
+    files:
+      - name: business
+        label: Business
+        file: content/settings/business.json
+        format: json
+        fields:
+          - { label: Setup complete, name: setupComplete, widget: boolean, default: false }
+          - { label: Business name, name: businessName, widget: string }
+          - { label: Tagline, name: tagline, widget: string }
+          - { label: Phone, name: phone, widget: string, hint: "Display format, e.g. (555) 010-0100. The call link uses its digits." }
+          - { label: Email, name: email, widget: string }
+          - { label: Address, name: address, widget: string }
+          - { label: Hours, name: hoursText, widget: string }
+          - { label: Service area, name: serviceAreaText, widget: string }
+          - { label: License line, name: licenseText, widget: string, required: false }
+          - { label: Logo, name: logo, widget: object, fields: [
+                { label: File, name: src, widget: image },
+                { label: Alt text, name: alt, widget: string } ] }
+          - { label: Brand colors, name: brand, widget: object, fields: [
+                { label: Primary, name: primary, widget: color },
+                { label: Accent, name: accent, widget: color } ] }
+          - { label: GTM container ID, name: gtmId, widget: string, required: false, pattern: ['^$|^GTM-[A-Z0-9]+$', "Use GTM-XXXXXXX or leave blank"] }
+          - { label: Site URL, name: siteUrl, widget: string }
+          - { label: Default share image, name: defaultOgImage, widget: image }
+          - label: Default meta
+            name: metaDefaults
+            widget: object
+            fields:
+              - { label: Title, name: title, widget: string }
+              - { label: Description, name: description, widget: text }
+          - { label: Hide from search engines (noindex), name: noindex, widget: boolean, default: true }
+          - &reviewCounter
+            label: Live review counter
+            name: reviewCounter
+            widget: object
+            required: false
+            collapsed: true
+            hint: "Counts {{reviewCount}} up in rating labels. 0 turns it off; blank inherits."
+            fields:
+              - { label: Target count, name: target, widget: number, value_type: int, min: 0, required: false }
+              - { label: Ramp (ms), name: rampMs, widget: number, value_type: int, min: 0, required: false }
+          - { label: Consent text, name: consentText, widget: text, hint: "Shown next to the consent checkbox on every lead form." }
+          - label: Badges
+            name: badges
+            widget: list
+            required: false
+            fields:
+              - { label: File, name: src, widget: image, required: false }
+              - { label: Alt text, name: alt, widget: string, required: false }
+
+  # ---------- Page Groups ----------
+  - name: groups
+    label: Page Groups
+    label_singular: Page Group
+    folder: content/groups
+    format: json
+    extension: json
+    create: true
+    slug: "{{fields.key}}"
+    identifier_field: key
+    summary: "/{{fields.key}} · {{fields.name}}"
+    editor: { preview: false }
+    fields:
+      - { label: Key (first URL segment), name: key, widget: string, pattern: ['^[a-z0-9-]+$', "Lowercase letters, numbers and hyphens"], hint: "Not admin, api or setup." }
+      - { label: Name, name: name, widget: string, hint: "Fills {{groupName}}, e.g. Austin" }
+      - { label: Region name, name: regionName, widget: string, hint: "Fills {{regionName}}" }
+      - { label: State, name: stateAbbr, widget: string, required: false }
+      - { label: Phone override, name: phone, widget: string, required: false }
+      - { label: Hours override, name: hoursText, widget: string, required: false }
+      - { label: Service area override, name: serviceAreaText, widget: string, required: false }
+      - { label: License line override, name: licenseText, widget: string, required: false }
+      - label: Meta overrides
+        name: metaDefaults
+        widget: object
+        required: false
+        collapsed: true
+        fields:
+          - { label: Title, name: title, widget: string, required: false }
+          - { label: Description, name: description, widget: text, required: false }
+      - *reviewCounter
+
+  # ---------- Pages ----------
+  - name: pages
+    label: Pages
+    label_singular: Page
+    folder: content/pages
+    format: json
+    extension: json
+    create: true
+    slug: "{{fields.slug}}"
+    identifier_field: slug
+    summary: "{{fields.slug}} · {{fields.layout}}"
+    sortable_fields: [slug, layout]
+    editor: { preview: false }
+    fields:
+      - { label: URL path, name: slug, widget: string, pattern: ['^/$|^/[a-z0-9-]+(/[a-z0-9-]+)*$', "Like /austin/date-night: lowercase, starting with /"], hint: "The first segment must be a page group key. Tokens: {{businessName}} {{groupName}} {{regionName}} {{stateAbbr}} {{groupSlug}} {{phone}}" }
+      # Keep in sync with LayoutKey in src/content/types.ts and src/layouts/index.ts.
+      - { label: Layout, name: layout, widget: select, options: [standard, services-first, trust-heavy, lead-form, campaign], default: standard, hint: "lead-form needs a Form; campaign needs Coupons." }
+      - label: Meta
+        name: meta
+        widget: object
+        fields:
+          - { label: Title, name: title, widget: string }
+          - { label: Description, name: description, widget: text }
+          - { label: Share image, name: image, widget: image, required: false }
+      - label: Hero
+        name: hero
+        widget: object
+        fields:
+          - { label: Eyebrow, name: eyebrow, widget: string, required: false }
+          - { label: Headline, name: headline, widget: string, hint: "**bold** works" }
+          - { label: Subheadline, name: subheadline, widget: text }
+          - &image
+            label: Image
+            name: image
+            widget: object
+            required: false
+            collapsed: true
+            fields:
+              - { label: File, name: src, widget: image, required: false }
+              - { label: Alt text, name: alt, widget: string, required: false }
+          - label: Primary CTA
+            name: primaryCta
+            widget: object
+            fields: &ctaFields
+              - { label: Label, name: label, widget: string }
+              - { label: Link, name: href, widget: string, required: false, hint: "A path (/austin), a URL, or #quote to scroll to the form. Leave blank to call the phone number." }
+          - label: Secondary CTA
+            name: secondaryCta
+            widget: object
+            required: false
+            collapsed: true
+            fields: &ctaOptionalFields
+              - { label: Label, name: label, widget: string, required: false }
+              - { label: Link, name: href, widget: string, required: false, hint: "A path, a URL, or #quote. Blank calls the phone number." }
+          - { label: Bullets, name: bullets, widget: list, required: false, field: { label: Bullet, name: bullet, widget: string, required: false } }
+          - { label: Rating label, name: ratingLabel, widget: string, required: false, hint: "e.g. {{reviewCount}} five-star reviews" }
+      - label: Trust bar
+        name: trustBar
+        widget: list
+        fields:
+          - &icon
+            label: Icon
+            name: icon
+            widget: select
+            # Keep in sync with src/content/iconMap.ts (check-content enforces it).
+            options: [award, baby, badge-check, calendar, calendar-clock, clock, heart, heart-handshake, home, map-pin, moon, party-popper, phone, school, shield-check, smile, sparkles, star, stethoscope, thumbs-up, timer, user-check, users, zap]
+          - { label: Label, name: label, widget: string }
+      - label: Services
+        name: services
+        widget: object
+        fields:
+          - { label: Heading, name: heading, widget: string }
+          - { label: Intro, name: intro, widget: text, required: false }
+          - label: Items
+            name: items
+            widget: list
+            fields:
+              - *icon
+              - { label: Title, name: title, widget: string }
+              - { label: Body, name: body, widget: text }
+              - *image
+              - { label: Link, name: href, widget: string, required: false }
+      - label: Why us
+        name: whyUs
+        widget: object
+        fields:
+          - { label: Heading, name: heading, widget: string }
+          - { label: Intro, name: intro, widget: text, required: false }
+          - label: Points
+            name: points
+            widget: list
+            fields:
+              - *icon
+              - { label: Title, name: title, widget: string }
+              - { label: Body, name: body, widget: text }
+          - *image
+      - label: Reviews
+        name: reviews
+        widget: object
+        fields:
+          - { label: Heading, name: heading, widget: string }
+          - { label: Rating label, name: ratingLabel, widget: string, required: false }
+          - label: Items
+            name: items
+            widget: list
+            fields:
+              - { label: Name, name: name, widget: string }
+              - { label: Location, name: location, widget: string, required: false }
+              - { label: Rating, name: rating, widget: number, value_type: int, min: 1, max: 5, default: 5 }
+              - { label: Quote, name: quote, widget: text }
+      - label: CTA band
+        name: cta
+        widget: object
+        fields:
+          - { label: Heading, name: heading, widget: string }
+          - { label: Body, name: body, widget: text }
+          - { label: Button, name: primaryCta, widget: object, fields: *ctaFields }
+      - label: Footer
+        name: footer
+        widget: object
+        fields:
+          - { label: Blurb, name: blurb, widget: text }
+          - { label: Links, name: links, widget: list, required: false, fields: *ctaOptionalFields }
+      - label: FAQ
+        name: faq
+        widget: list
+        required: false
+        fields:
+          - { label: Question, name: question, widget: string, required: false }
+          - { label: Answer, name: answer, widget: text, required: false }
+      - label: Form
+        name: form
+        widget: object
+        required: false
+        collapsed: true
+        hint: "Required for the lead-form layout. Other layouts show it in a #quote section."
+        fields:
+          - { label: Form ID, name: id, widget: string, required: false, hint: "Reported as form_id, e.g. date-night" }
+          - { label: Title, name: title, widget: string, required: false }
+          - { label: Intro, name: intro, widget: string, required: false }
+          - { label: One field per step, name: multiStep, widget: boolean, required: false, default: false }
+          - { label: Submit label, name: submitLabel, widget: string, required: false }
+          - { label: Success title, name: successTitle, widget: string, required: false }
+          - { label: Success message, name: successBody, widget: text, required: false }
+          - label: Fields
+            name: fields
+            widget: list
+            required: false
+            fields:
+              - { label: Name, name: name, widget: string, required: false, hint: "Sent as the key. Use name, phone and email for those." }
+              - { label: Type, name: type, widget: select, required: false, options: [text, tel, email, zip, date, select, textarea, number], default: text }
+              - { label: Label, name: label, widget: string, required: false }
+              - { label: Required, name: required, widget: boolean, required: false, default: false }
+              - { label: Options (select only), name: options, widget: list, required: false, field: { label: Option, name: option, widget: string, required: false } }
+              - { label: Placeholder, name: placeholder, widget: string, required: false }
+      - label: Offer value stack
+        name: offer
+        widget: object
+        required: false
+        collapsed: true
+        fields:
+          - { label: Heading, name: heading, widget: string, required: false }
+          - label: Items
+            name: items
+            widget: list
+            required: false
+            fields:
+              - { label: Title, name: title, widget: string, required: false }
+              - { label: Value, name: value, widget: string, required: false }
+              - { label: Body, name: body, widget: text, required: false }
+          - { label: Total line, name: totalLabel, widget: string, required: false }
+      - label: Coupons
+        name: coupons
+        widget: list
+        required: false
+        hint: "Required for the campaign layout."
+        fields:
+          - { label: Title, name: title, widget: string, required: false }
+          - { label: Value, name: value, widget: string, required: false, hint: "e.g. 15% off" }
+          - { label: Body, name: body, widget: text, required: false }
+          - { label: Code, name: code, widget: string, required: false }
+          - { label: Fine print, name: finePrint, widget: string, required: false }
+          - &dateField
+            label: Starts
+            name: startsAt
+            widget: datetime
+            required: false
+            default: ""
+            format: YYYY-MM-DD
+            date_format: YYYY-MM-DD
+            time_format: false
+            picker_utc: false
+          - { <<: *dateField, label: Expires, name: expiresAt, hint: "A date-only value lasts through the end of that day." }
+      - label: Announcements
+        name: announcements
+        widget: list
+        required: false
+        hint: "Only the first active one shows."
+        fields:
+          - { label: Text, name: text, widget: string, required: false }
+          - { label: Link, name: href, widget: string, required: false }
+          - { label: Link label, name: linkLabel, widget: string, required: false }
+          - { <<: *dateField, label: Starts, name: startsAt }
+          - { <<: *dateField, label: Expires, name: expiresAt }
+      - label: Promo ads
+        name: promoAds
+        widget: list
+        required: false
+        fields:
+          - { label: Heading, name: heading, widget: string, required: false }
+          - { label: Body, name: body, widget: text, required: false }
+          - *image
+          - { label: Button, name: cta, widget: object, required: false, fields: *ctaOptionalFields }
+          - { <<: *dateField, label: Starts, name: startsAt }
+          - { <<: *dateField, label: Expires, name: expiresAt }
+      - label: A/B test
+        name: experiment
+        widget: object
+        required: false
+        collapsed: true
+        hint: "Set on the control page. Fill a variant page OR a variant layout. Use a new ID to restart a test."
+        fields:
+          - { label: Test ID, name: id, widget: string, required: false, hint: "Cookie lp_ab_<id>. Lowercase letters, numbers and underscores." }
+          - { label: Variant page, name: variantSlug, widget: relation, collection: pages, value_field: slug, search_fields: [slug, meta.title], display_fields: [slug], required: false }
+          - { label: Variant layout, name: variantLayout, widget: select, required: false, options: ["", standard, services-first, trust-heavy, lead-form, campaign] }
+          - { label: Variant share (%), name: variantPercent, widget: number, value_type: int, min: 0, max: 100, required: false, hint: "Blank means 50. 0 or 100 forces an arm (kill switch)." }
+      - { <<: *dateField, label: Campaign ends, name: campaignEndsAt, hint: "After this date the page redirects to its group home, keeping the query string." }
+      - *reviewCounter
