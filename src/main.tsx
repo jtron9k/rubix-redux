@@ -1,9 +1,10 @@
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
+import { AppRouter } from './AppRouter';
 import './index.css';
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    <main className="p-8 text-brand-700">Scaffold OK</main>
+    <AppRouter />
   </StrictMode>,
 );

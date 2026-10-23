@@ -12,9 +12,11 @@ interface Props {
   compact?: boolean;
   /** Replaces the image column, e.g. the lead form. */
   aside?: ReactNode;
+  /** Rendered under the CTAs, e.g. a countdown. */
+  children?: ReactNode;
 }
 
-export function Hero({ page, site, compact = false, aside }: Props) {
+export function Hero({ page, site, compact = false, aside, children }: Props) {
   const { hero } = page;
   return (
     <section className="relative overflow-hidden bg-gradient-to-b from-brand-50 to-white px-4 sm:px-6">
@@ -32,6 +34,7 @@ export function Hero({ page, site, compact = false, aside }: Props) {
             <CtaButton cta={hero.primaryCta} site={site} page={page} location="hero" />
             <CtaButton cta={hero.secondaryCta} site={site} page={page} location="hero_secondary" variant="secondary" />
           </div>
+          {children}
           {hero.bullets && hero.bullets.length > 0 && (
             <ul className="mt-8 grid gap-2 text-ink-700 sm:grid-cols-2">
               {hero.bullets.map((b) => (

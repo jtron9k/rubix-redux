@@ -4,6 +4,7 @@ import type { CtaLink, PageContent, SiteContent } from '../content/types';
 import { pushEvent } from '../lib/analytics';
 import { useReducedMotion } from '../hooks/useReducedMotion';
 import { useReviewCounter } from '../hooks/reviewCounter';
+import { scrollToQuote } from '../lib/scroll';
 import { PhoneLink } from './PhoneLink';
 
 type Variant = 'primary' | 'secondary' | 'light';
@@ -21,14 +22,6 @@ interface Props {
   location: string;
   variant?: Variant;
   className?: string;
-}
-
-export function scrollToQuote(): boolean {
-  const el = document.getElementById('quote');
-  if (!el) return false;
-  el.scrollIntoView({ behavior: 'smooth', block: 'start' });
-  el.querySelector<HTMLElement>('input, select, textarea')?.focus({ preventScroll: true });
-  return true;
 }
 
 /**
