@@ -89,7 +89,7 @@ collections:
     summary: "/{{fields.key}} · {{fields.name}}"
     editor: { preview: false }
     fields:
-      - { label: Key (first URL segment), name: key, widget: string, pattern: ['^[a-z0-9-]+$', "Lowercase letters, numbers and hyphens"], hint: "Not admin, api or setup." }
+      - { label: Key (first URL segment), name: key, widget: string, pattern: ['^[a-z0-9-]+$', "Lowercase letters, numbers and hyphens"], hint: "Not admin, api, setup, images or assets." }
       - { label: Name, name: name, widget: string, hint: "Fills {{groupName}}, e.g. Austin" }
       - { label: Region name, name: regionName, widget: string, hint: "Fills {{regionName}}" }
       - { label: State, name: stateAbbr, widget: string, required: false }
