@@ -66,7 +66,7 @@ export function timeLeft(deadline: Date | null, now: Date) {
 }
 
 /**
- * Where an expired campaign page should send visitors: its group home, or '/'.
+ * Where an expired campaign page should send visitors: its group home, or '/' for a group home itself.
  * Null when the campaign is still running, has no end date, or the target page doesn't exist.
  */
 export function campaignRedirect(
@@ -77,8 +77,9 @@ export function campaignRedirect(
 ): string | null {
   const ends = parseDate(campaignEndsAt, true);
   if (!ends || ends > now) return null;
+  if (slug === '/') return null;
   const seg = slug.split('/').filter(Boolean)[0];
-  const target = seg ? `/${seg}` : '/';
-  if (target === slug || !hasPage(target)) return null;
+  const target = `/${seg}` === slug ? '/' : `/${seg}`;
+  if (!hasPage(target)) return null;
   return target;
 }

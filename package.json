@@ -16,6 +16,7 @@
     "preview": "vite preview",
     "typecheck": "node scripts/build-og-manifest.mjs && tsc -p tsconfig.app.json && tsc -p tsconfig.node.json && tsc -p tsconfig.netlify.json",
     "lint": "eslint .",
+    "pretest": "node scripts/build-og-manifest.mjs",
     "test": "vitest run",
     "check:content": "node scripts/check-content.mjs",
     "setup": "node scripts/setup.mjs",
