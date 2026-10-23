@@ -1,6 +1,8 @@
 import fs from 'node:fs';
 import path from 'node:path';
+import type { IncomingMessage, ServerResponse } from 'node:http';
 import type { Plugin } from 'vite';
+import { applySetup, planSetup, readState, SetupValidationError } from '../scripts/lib/setup-core.mjs';
 import { GTM_ID_PATTERN } from '../shared/content-core.mjs';
 import { themeCss } from '../shared/theme.mjs';
 import type { BusinessSettings, PageContent } from '../src/content/types';
@@ -122,6 +124,50 @@ function bodyTags(s: BusinessSettings, pages: PageContent[]): string {
   return parts.join('\n    ');
 }
 
+function sendJson(res: ServerResponse, status: number, body: unknown) {
+  res.statusCode = status;
+  res.setHeader('Content-Type', 'application/json');
+  res.end(JSON.stringify(body));
+}
+
+async function readBody(req: IncomingMessage): Promise<unknown> {
+  const chunks: Buffer[] = [];
+  for await (const chunk of req) chunks.push(chunk as Buffer);
+  return JSON.parse(Buffer.concat(chunks).toString('utf8') || '{}');
+}
+
+/**
+ * Dev-only API for the /setup wizard. GET /__setup/state returns the current answers;
+ * POST /__setup/save with `{ answers, dryRun? }` validates and (unless dryRun) writes through setup-core.
+ * Requiring a JSON content type means a cross-site page can't post here without a CORS preflight.
+ */
+// A setup save rewrites business.json; skip the reload that would wipe the wizard's checklist.
+// Its "View the site" link is a full page load, so index.html still picks up the new settings.
+let skipReloadUntil = 0;
+
+async function setupApi(req: IncomingMessage, res: ServerResponse) {
+  try {
+    if (req.method === 'GET' && req.url === '/state') return sendJson(res, 200, readState());
+    if (req.method === 'POST' && req.url === '/save') {
+      if (!String(req.headers['content-type'] ?? '').startsWith('application/json')) {
+        return sendJson(res, 415, { error: 'Expected application/json.' });
+      }
+      const { answers, dryRun } = (await readBody(req)) as { answers: Parameters<typeof planSetup>[0]; dryRun?: boolean };
+      if (dryRun) {
+        const plan = planSetup(answers);
+        const changes = plan.changes.map(({ path: p, action }) => ({ path: p, action }));
+        return sendJson(res, Object.keys(plan.errors).length ? 422 : 200, { ...plan, changes });
+      }
+      skipReloadUntil = Date.now() + 3000;
+      return sendJson(res, 200, { errors: {}, ...applySetup(answers) });
+    }
+    return sendJson(res, 404, { error: 'Not found.' });
+  } catch (err) {
+    if (err instanceof SetupValidationError) return sendJson(res, 422, { errors: err.errors });
+    return sendJson(res, 500, { error: err instanceof Error ? err.message : String(err) });
+  }
+}
+
 export function siteSettingsPlugin(): Plugin {
   return {
     name: 'site-settings',
@@ -130,10 +176,11 @@ export function siteSettingsPlugin(): Plugin {
       return html.replace('<!--site-head-->', headTags(s)).replace('<!--site-body-->', bodyTags(s, readPages()));
     },
     configureServer(server) {
+      server.middlewares.use('/__setup', (req, res) => void setupApi(req, res));
       // index.html is built from business.json, so a settings change needs a full reload.
       server.watcher.add(SETTINGS_FILE);
       server.watcher.on('change', (file) => {
-        if (path.resolve(file) === SETTINGS_FILE) server.ws.send({ type: 'full-reload' });
+        if (path.resolve(file) === SETTINGS_FILE && Date.now() > skipReloadUntil) server.ws.send({ type: 'full-reload' });
       });
     },
   };

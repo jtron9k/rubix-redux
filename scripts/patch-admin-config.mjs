@@ -6,21 +6,10 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { patchConfig, repoFromUrl } from './lib/admin-config.mjs';
 import { ROOT } from './lib/load-content.mjs';
 
 const FILE = path.join(ROOT, 'dist/admin/config.yml');
-
-export function repoFromUrl(url) {
-  const m = /github\.com[/:]([^/\s]+\/[^/\s]+?)(?:\.git)?\/?$/.exec(url ?? '');
-  return m ? m[1] : null;
-}
-
-export function patchConfig(yml, { repo, baseUrl }) {
-  let out = yml;
-  if (repo) out = out.replace(/^(\s+repo:\s*).*$/m, `$1${repo}`);
-  if (baseUrl) out = out.replace(/^(\s+base_url:\s*).*$/m, `$1${baseUrl.replace(/\/$/, '')}`);
-  return out;
-}
 
 const isMain = process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url);
 if (isMain) {
