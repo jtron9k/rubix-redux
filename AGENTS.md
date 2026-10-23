@@ -92,4 +92,4 @@ Components get `site` (settings merged with the group) and `page` as props. Ther
 - Conventional Commits. Commit after each coherent step; all gates green.
 - lucide-react is the only icon library; add icons to `iconMap.ts` **and** the Decap `icon` select.
 - Keep pure logic React-free in `src/lib/` or `shared/` with tests next to it.
-- Docs: `README.md` (users), this file (agents), `docs/gtm.md` (tracking), `next_steps.md` (session handoff).
+- Docs: `README.md` (users), this file (agents), `docs/gtm.md` (tracking). `next_steps.md` (session handoff) and `docs/plans/` are local and gitignored.

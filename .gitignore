@@ -10,3 +10,7 @@ netlify/edge-functions/og-manifest.json
 coverage
 .local/
 .claude/settings.local.json
+
+# Local planning and session handoff, never published
+next_steps.md
+docs/plans/
