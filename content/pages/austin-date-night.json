@@ -1,0 +1,272 @@
+{
+  "slug": "/austin/date-night",
+  "layout": "lead-form",
+  "meta": {
+    "title": "Date Night Sitters in Austin | {{businessName}}",
+    "description": "Book a trusted date-night sitter in Austin in about a minute."
+  },
+  "hero": {
+    "eyebrow": "Date night in {{groupName}}",
+    "headline": "Get out of the house. **We have the kids.**",
+    "subheadline": "Book a background-checked sitter for date night in {{groupName}}. Dinner, baths and bedtime handled.",
+    "image": {
+      "src": "/images/uploads/placeholder-hero.svg",
+      "alt": "Sitter playing a board game with two kids"
+    },
+    "primaryCta": {
+      "label": "Book a sitter",
+      "href": "#quote"
+    },
+    "bullets": [
+      "Matched within 24 hours",
+      "No membership fees",
+      "Same sitter every time"
+    ],
+    "ratingLabel": "{{reviewCount}} five-star reviews"
+  },
+  "trustBar": [
+    {
+      "icon": "heart-handshake",
+      "label": "CPR-certified"
+    },
+    {
+      "icon": "shield-check",
+      "label": "Background-checked"
+    },
+    {
+      "icon": "badge-check",
+      "label": "Fully insured"
+    },
+    {
+      "icon": "timer",
+      "label": "Matched in 24 hours"
+    }
+  ],
+  "services": {
+    "heading": "Childcare for every part of your week",
+    "intro": "Every sitter is interviewed, reference-checked and trained before their first booking in {{groupName}}.",
+    "items": [
+      {
+        "icon": "moon",
+        "title": "Date night",
+        "body": "An evening out while a trusted sitter handles dinner, baths and bedtime.",
+        "image": {
+          "src": "/images/uploads/placeholder-service-date-night.svg",
+          "alt": "Sitter reading a bedtime story"
+        }
+      },
+      {
+        "icon": "school",
+        "title": "After school",
+        "body": "Pickup, snacks and homework help until you get home.",
+        "image": {
+          "src": "/images/uploads/placeholder-service-after-school.svg",
+          "alt": "Sitter helping with homework"
+        }
+      },
+      {
+        "icon": "home",
+        "title": "Overnight",
+        "body": "Overnight care for work trips and weekends away.",
+        "image": {
+          "src": "/images/uploads/placeholder-service-overnight.svg",
+          "alt": "Quiet nursery at night"
+        }
+      },
+      {
+        "icon": "zap",
+        "title": "Last minute",
+        "body": "Same-day sitters when plans change. **Book by noon** for tonight.",
+        "image": {
+          "src": "/images/uploads/placeholder-service-last-minute.svg",
+          "alt": "Sitter arriving at the door"
+        }
+      },
+      {
+        "icon": "stethoscope",
+        "title": "Special needs",
+        "body": "Sitters with extra training for medical and developmental needs.",
+        "image": {
+          "src": "/images/uploads/placeholder-service-special-needs.svg",
+          "alt": "Sitter playing with a child"
+        }
+      },
+      {
+        "icon": "party-popper",
+        "title": "Event childcare",
+        "body": "Group care for weddings, parties and conferences.",
+        "image": {
+          "src": "/images/uploads/placeholder-service-event.svg",
+          "alt": "Kids playing at an event"
+        }
+      }
+    ]
+  },
+  "whyUs": {
+    "heading": "Why {{groupName}} families choose {{businessName}}",
+    "points": [
+      {
+        "icon": "user-check",
+        "title": "Vetted, not just listed",
+        "body": "Fewer than 1 in 10 applicants become sitters."
+      },
+      {
+        "icon": "calendar-clock",
+        "title": "Booked around you",
+        "body": "Recurring schedules or one-off nights, changed with one text."
+      },
+      {
+        "icon": "smile",
+        "title": "Happy-kid guarantee",
+        "body": "If a sitting doesn't go well, the next one is on us."
+      }
+    ],
+    "image": {
+      "src": "/images/uploads/placeholder-team.svg",
+      "alt": "Our sitter team"
+    }
+  },
+  "reviews": {
+    "heading": "What parents say",
+    "ratingLabel": "{{reviewCount}} five-star reviews",
+    "items": [
+      {
+        "name": "Sample parent A.",
+        "location": "{{groupName}}",
+        "rating": 5,
+        "quote": "Our sitter showed up early, had the kids in bed on time and left a note about the night. We finally had a real date."
+      },
+      {
+        "name": "Sample parent B.",
+        "location": "{{groupName}}",
+        "rating": 5,
+        "quote": "Booked at 2pm, had a sitter by 6. She was calm, kind and the kids keep asking when she is coming back."
+      },
+      {
+        "name": "Sample parent C.",
+        "location": "{{regionName}}",
+        "rating": 5,
+        "quote": "The after-school pickup has made our weekdays so much easier. Reliable every single time."
+      }
+    ]
+  },
+  "cta": {
+    "heading": "Ready for a night off?",
+    "body": "Tell us when you need care and we will match you with a sitter in {{groupName}} within 24 hours.",
+    "primaryCta": {
+      "label": "Call {{phone}}"
+    }
+  },
+  "footer": {
+    "blurb": "{{businessName}} connects {{regionName}} families with trusted, background-checked sitters. Sample content for demonstration."
+  },
+  "faq": [
+    {
+      "question": "How are sitters screened?",
+      "answer": "Every sitter passes an interview, reference checks, a national background check and CPR certification before their first booking."
+    },
+    {
+      "question": "How fast can I book?",
+      "answer": "Most families are matched within 24 hours. For tonight, call before noon."
+    },
+    {
+      "question": "What does it cost?",
+      "answer": "Rates depend on the number of children and the time of day. Call {{phone}} for a quote."
+    },
+    {
+      "question": "Do you serve my area?",
+      "answer": "We serve families across {{regionName}}. Call us to confirm your neighborhood."
+    }
+  ],
+  "form": {
+    "id": "date-night",
+    "title": "Book your date-night sitter",
+    "intro": "Takes about a minute. We will text you a match.",
+    "multiStep": true,
+    "submitLabel": "Request my sitter",
+    "successTitle": "You are on the list!",
+    "successBody": "A {{groupName}} coordinator will text you within the hour to confirm your sitter.",
+    "fields": [
+      {
+        "name": "name",
+        "type": "text",
+        "label": "Your name",
+        "required": true,
+        "placeholder": "First and last name"
+      },
+      {
+        "name": "phone",
+        "type": "tel",
+        "label": "Mobile phone",
+        "required": true,
+        "placeholder": "(555) 555-0100"
+      },
+      {
+        "name": "email",
+        "type": "email",
+        "label": "Email",
+        "required": false
+      },
+      {
+        "name": "zip",
+        "type": "zip",
+        "label": "ZIP code",
+        "required": true
+      },
+      {
+        "name": "date_needed",
+        "type": "date",
+        "label": "Date needed",
+        "required": true
+      },
+      {
+        "name": "children",
+        "type": "select",
+        "label": "Number of children",
+        "required": true,
+        "options": [
+          "1",
+          "2",
+          "3",
+          "4 or more"
+        ]
+      },
+      {
+        "name": "ages",
+        "type": "text",
+        "label": "Ages",
+        "required": false,
+        "placeholder": "e.g. 3 and 6"
+      },
+      {
+        "name": "notes",
+        "type": "textarea",
+        "label": "Anything we should know?",
+        "required": false
+      }
+    ]
+  },
+  "offer": {
+    "heading": "Every date-night booking includes",
+    "items": [
+      {
+        "title": "A vetted, CPR-certified sitter",
+        "value": "Included"
+      },
+      {
+        "title": "Dinner, baths and bedtime routine",
+        "value": "Included"
+      },
+      {
+        "title": "Photo update during the evening",
+        "value": "Included"
+      },
+      {
+        "title": "First booking credit",
+        "value": "$20 off",
+        "body": "Applied automatically to your first night."
+      }
+    ],
+    "totalLabel": "First night: **$20 off**"
+  }
+}
