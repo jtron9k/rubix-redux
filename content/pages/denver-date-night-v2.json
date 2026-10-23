@@ -185,7 +185,7 @@
     "multiStep": false,
     "submitLabel": "Request my sitter",
     "successTitle": "You are on the list!",
-    "successBody": "A {{groupName}} coordinator will text you within the hour to confirm your sitter.",
+    "successBody": "Your {{groupName}} coordinator will text you within the hour to confirm your sitter.",
     "fields": [
       {
         "name": "name",
