@@ -13,6 +13,9 @@ interface Props {
 
 export function CtaBand({ content, page, site, tone = 'light', location }: Props) {
   const dark = tone === 'dark';
+  // Mirrors CtaButton: a blank href, or '#quote' without a form, already dials.
+  const href = content.primaryCta?.href?.trim() ?? '';
+  const ctaDials = !href || (href === '#quote' && !page.form);
   return (
     <section className={`px-4 py-14 sm:px-6 ${dark ? 'bg-ink-900 text-white' : 'bg-brand-600 text-white'}`}>
       <div className="mx-auto flex max-w-6xl flex-col items-start justify-between gap-6 md:flex-row md:items-center">
@@ -26,9 +29,11 @@ export function CtaBand({ content, page, site, tone = 'light', location }: Props
         </div>
         <div className="flex flex-col items-start gap-2 md:items-end">
           <CtaButton cta={content.primaryCta} site={site} page={page} location={location} variant="light" />
-          <PhoneLink site={site} location={`${location}_phone`} className="text-sm font-medium text-white/85 underline-offset-2 hover:underline">
-            or call {site.phone}
-          </PhoneLink>
+          {!ctaDials && (
+            <PhoneLink site={site} location={`${location}_phone`} className="text-sm font-medium text-white/85 underline-offset-2 hover:underline">
+              or call {site.phone}
+            </PhoneLink>
+          )}
         </div>
       </div>
     </section>
